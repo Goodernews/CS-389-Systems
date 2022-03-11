@@ -1,0 +1,183 @@
+\documentclass{exam}
+
+\usepackage[margin=1in]{geometry}
+
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage{listings}
+
+\pagestyle{headandfoot}
+\firstpageheader{CSCI 389}{}{Memory Hierarchy Assignment}
+\runningheader{CSCI 389}{}{Memory Hierarchy Assignment}
+
+
+\begin{document}
+\title{Memory Hierarchy Assignment (Learning)}
+\author{CSCI 389: Computer Systems}
+\date{Spring 2022}
+\maketitle
+
+
+This assignment is an opportunity to test your understanding of the memory hierarchy and receive feedback. 
+Point values are assigned so that you can differentiate between large and small mistakes, but this assignment does not affect your grade. 
+
+\textbf{Due Date:}
+Friday, February 25th at 10:00 am. 
+
+\begin{questions}
+
+\question[10]
+\textbf{Average Memory Access Time.}
+Consider a system with an L1 cache and an L2 cache between the processor and memory. 
+The system has the following characteristics:
+\begin{itemize}
+\item The L1 cache takes 1 cycle to access.
+\item The L1 cache has a 5\% miss ratio. 
+\item The L2 cache takes 15 cycle to access.
+\item The L2 cache has a 30\% miss ratio. 
+\item Memory takes 180 cycles to access. 
+\end{itemize}
+\begin{parts}
+\part[6]
+What is the average memory access time for this system?
+
+\part[4]
+What is the average memory access time if the miss ratio of the L1 cache increases to 10\%?
+\end{parts}
+
+
+
+\textbf{A.}
+
+\begin{itemize}
+\item Memory takes 180 cycles
+\item L2 Cache takes $15+0.3 \cdot 180=15+54=69$
+\item L1 cache takes $1+0.05 \cdot 69 = 1+3.45=4.45$ this is rounded up to $5$
+\end{itemize}
+
+
+\textbf{B.}
+
+\begin{itemize}
+\item Memory takes 180 cycles
+\item L2 Cache takes $15+0.3 \cdot 180=15+54=69$
+\item L1 cache takes $1+0.1 \cdot 69 = 1+6.9=7.9$ this is rounded up to $8$
+\end{itemize}
+
+
+\question[20]
+\textbf{Caching Bits.}
+Consider the following request sequence. 
+$$ 0x1000, 0x1100, 0x1008, 0x1108, 0x1010, 0x1110, 0x2000, 0x2100$$
+\begin{parts}
+\part[5]
+Provide a physical diagram showing how a direct-mapped cache with block size of 16 bytes will cache this sequence. 
+Assume that the cache can store 128 bytes of data and runs LRU. 
+
+\part[5]
+Provide a physical diagram showing how a 2-way set associative cache with block size of 16 bytes will cache this sequence. 
+Assume that the cache can store 128 bytes of data and runs LRU. 
+
+\part[5]
+Provide a physical diagram showing how a fully associative cache with block size of 16 bytes will cache this sequence. 
+Assume that the cache can store 128 bytes of data and runs LRU. 
+
+\part[5]
+Provide a physical diagram showing how a fully associative cache with block size of 32 bytes will cache this sequence. 
+Assume that the cache can store 128 bytes of data and runs LRU. 
+\end{parts}
+
+\textbf{A.}
+
+% tag is remaining
+% Set index is first 3 and reffers to the order in index
+% offset is last 4 bits
+
+Request 1: $0x1000=0001 0000 0000 0000$
+
+$\begin{tabular}{c|c| c}
+\textbf{valid}&\textbf{tag}&\textbf{Set Index}}\\ [0.5ex] 
+ \hline\hline
+1&1 0000 0000 0000\\
+0&001\\
+0&010\\
+0&011\\
+0&100\\
+0&101\\
+0&110\\
+0&111\\
+\end{tabular}$
+
+
+\question[20]
+\textbf{Eviction Policies.}
+Consider the following request sequence:
+$$ A, B, C, A, D, E, A, B, C $$
+\begin{parts}
+\part[5]
+Provide a logical diagram that shows how an optimal fully associative cache of size 3 will cache this sequence. 
+
+\part[5]
+Provide a logical diagram that shows how a FIFO fully associative cache of size 3 will cache this sequence. 
+
+\part[5]
+Provide a logical diagram that shows how an LRU fully associative cache of size 3 will cache this sequence. 
+
+\part[5]
+Label each miss in your diagram for part c with its type. 
+\end{parts}
+
+\end{questions}
+
+\textbf{A.}
+
+Assuming there are no pre-fetches, then this is the ideal structure:
+
+\begin{center}
+$\begin{tabular}{c|ccc ccc ccc}
+\textbf{Cache}& Req 1 (A) & Req 2 (B) & Req 3 (C) & Req 4 (A)& Req 5 (D)& Req 6 (E)& Req 7 (A)& Req 8 (B) & Req 9 (C)\\ [0.5ex] 
+ \hline\hline
+1&A&A&A&A&A&A&A&A&A \\
+2&\emph{Empty}& B& B& B& B& B& B& B& B\\
+3&\emph{Empty}& \emph{Empty} &C&C&D&E&E&E&C\\
+\end{tabular}$
+\end{center}
+
+This is due to the fact that D \& E are only requested once while A, B, \& C are all requested at least twice.
+
+Because bypassing is not mentioned (and therefore presumably banned) The third cache storage is used 
+
+\textbf{B.}
+
+\begin{center}
+
+$\begin{tabular}{c|ccc ccc ccc}
+\textbf{Cache}& Req 1 (A) & Req 2 (B) & Req 3 (C) & Req 4 (A)& Req 5 (D)& Req 6 (E)& Req 7 (A)& Req 8 (B) & Req 9 (C)\\ [0.5ex] 
+ \hline\hline
+1&A (1) & A (1)& A (1) & A (1)& D (5)& D (5)& D (5)& B (8) & B (8)\\
+2&\emph{Empty}& B (2) & B (2) & B (2)& B (2)& E (6) & E (6) & E (6) & C (9)\\
+3&\emph{Empty}& \emph{Empty} & C (3)& C (3)& C (3)& C (3) & A (7)& A (7)& A (7)\\
+\end{tabular}$
+\end{center}
+
+\textbf{C.}
+
+\begin{center}
+$\begin{tabular}{c|ccc ccc ccc}
+\textbf{Cache}& Req 1 (A) & Req 2 (B) & Req 3 (C) & Req 4 (A)& Req 5 (D)& Req 6 (E)& Req 7 (A)& Req 8 (B) & Req 9 (C)\\ [0.5ex] 
+ \hline\hline
+1&A (1) & A (1)& A (1) & A (4)& A (4)& A (4)& A (7)& A (7)& A (7)\\
+2&\emph{Empty}& B (2) & B (2) & B (2)& D (5)& D (5)& D (5) & B (8) & B (8)\\
+3&\emph{Empty}& \emph{Empty} & C (3)& C (3)& C (3) & E (6)& E (6)& E (6) &C(9) \\
+\end{tabular}$
+\end{center}
+
+\textbf{D.}
+
+\begin{itemize}
+\item \textbf{Steps 1-3}: Compulsory misses (First time seeing A, B, \& C)
+\item \textbf{Step 5-6}: Compulsory misses (although the cache blocks that they overwrite are used later the addresses have not been previously seen)
+\item \textbf{Step 8-9}: Replacement misses (if D \& E had been bypassed then B \& C would not need to be fetched again)
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,658 @@
+\documentclass{exam}
+
+\usepackage[margin=1in]{geometry}
+
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage{listings}
+
+\pagestyle{headandfoot}
+\firstpageheader{CSCI 389}{}{Memory Hierarchy Assignment}
+\runningheader{CSCI 389}{}{Memory Hierarchy Assignment}
+
+
+\begin{document}
+\title{Memory Hierarchy Assignment (Evaluation)}
+\author{CSCI 389: Computer Systems}
+\date{Spring 2022}
+\maketitle
+
+This assignment is designed to test your understanding of the memory hierarchy. 
+Feel free to collaborate wih others and use resources, but all code and writeups must be your own. 
+
+\textbf{Due Date:}
+Friday, March 4th at 10:00 am. 
+
+\begin{questions}
+
+\question[10]
+\textbf{Average Memory Access Time.}
+Consider a system with an L1 cache and an L2 cache between the processor and memory. 
+The system has the following characteristics:
+\begin{itemize}
+\item The L1 cache takes 2 cycles to access.
+\item The L1 cache has a 10\% miss ratio. 
+\item The L2 cache takes 20 cycle to access.
+\item The L2 cache has a 15\% miss ratio. 
+\item Memory takes 220 cycles to access. 
+\end{itemize}
+\begin{parts}
+\part[6]
+What is the average memory access time for this system?
+
+\part[4]
+What is the average memory access time if the miss ratio of the L1 cache decreases to 5\%?
+\end{parts}
+
+\textbf{A.}
+
+\begin{itemize}
+\item Memory takes 220 cycles
+\item L2 takes $20+0.15(220)=53$
+\item L1 takes $2+0.1(53)=7.3$
+\end{itemize}
+
+Thus the average memory access time is $7.3$ cycles
+
+\textbf{B.}
+
+\begin{itemize}
+\item Memory takes 220 cycles
+\item L2 takes $20+0.15(220)=53$ cycles on average.
+\item L1 takes $2+0.05(53)=4.65$ cycles on average. 
+\end{itemize}
+
+
+Thus the average memory access time is $4.65$ cycles
+
+
+\question[20]
+\textbf{Caching Bits.}
+Consider the following request sequence. 
+$$ 0x0000, 0x8400, 0x6082, 0x840C, 0x8411, 0x2148, 0x2110, 0x2420, 0x2100, 0x8403$$
+For each part, you will draw a physical diagram, which consists of the tags and valid bits for each cache line. 
+Clearly mark which cache lines are in which sets. 
+In the area where data would normally go, simply denote the range of addresses covered. 
+\begin{parts}
+\part[5]
+Provide a physical diagram showing how a direct-mapped cache with block size of 16 bytes will cache this sequence. 
+Assume that the cache can store 128 bytes of data and runs LRU. 
+
+\part[5]
+Provide a physical diagram showing how a 2-way set associative cache with block size of 16 bytes will cache this sequence. 
+Assume that the cache can store 128 bytes of data and runs LRU. 
+
+\part[5]
+Provide a physical diagram showing how a fully associative cache with block size of 16 bytes will cache this sequence. 
+Assume that the cache can store 128 bytes of data and runs LRU. 
+
+\part[5]
+Provide a physical diagram showing how a fully associative cache with block size of 32 bytes will cache this sequence. 
+Assume that the cache can store 128 bytes of data and runs LRU. 
+\end{parts}
+
+
+
+
+
+\textbf{A.} 
+
+$\begin{tabular}{c| c c c}
+\textbf{Hex}&\textbf{Tag(First 9)}&\textbf{Set (Middle 3)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0x0000&0000  0000 0& 000 &0000\\
+0x8400&1000 0100 0& 000 & 0000\\
+0x6082&0110 0000 1& 000 & 0010\\
+0x840C&1000 0100 0 & 000 & 1100\\
+0x8411&1000 0100 0 & 001 &  0001 \\ 
+0x2148&0010 0001 0 & 100 & 1000 \\
+0x2420&0010 0100 0 & 010 & 0000 \\
+0x2100&0010 0001 0 & 000 & 0000 \\
+0x8403&1000 0100 0 & 000 & 0011
+\end{tabular}$
+
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+000&$\emptyset$&$\emptyset$\\
+001&$\emptyset$&$\emptyset$\\
+010&$\emptyset$&$\emptyset$\\
+011&$\emptyset$&$\emptyset$\\
+100&$\emptyset$&$\emptyset$\\
+101&$\emptyset$&$\emptyset$\\
+110&$\emptyset$&$\emptyset$\\
+111&$\emptyset$&$\emptyset$
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+000&0000  0000 &0000\\
+001&$\emptyset$&$\emptyset$\\
+010&$\emptyset$&$\emptyset$\\
+011&$\emptyset$&$\emptyset$\\
+100&$\emptyset$&$\emptyset$\\
+101&$\emptyset$&$\emptyset$\\
+110&$\emptyset$&$\emptyset$\\
+111&$\emptyset$&$\emptyset$
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+000&1000 0100 0&0000\\
+001&$\emptyset$&$\emptyset$\\
+010&$\emptyset$&$\emptyset$\\
+011&$\emptyset$&$\emptyset$\\
+100&$\emptyset$&$\emptyset$\\
+101&$\emptyset$&$\emptyset$\\
+110&$\emptyset$&$\emptyset$\\
+111&$\emptyset$&$\emptyset$
+\end{tabular} $\longrightarrow$
+
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+000&0110 0000 1&0010\\
+001&$\emptyset$&$\emptyset$\\
+010&$\emptyset$&$\emptyset$\\
+011&$\emptyset$&$\emptyset$\\
+100&$\emptyset$&$\emptyset$\\
+101&$\emptyset$&$\emptyset$\\
+110&$\emptyset$&$\emptyset$\\
+111&$\emptyset$&$\emptyset$
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+000&0110 0000 1&0010\\
+001&0110 0000 1&0001\\
+010&$\emptyset$&$\emptyset$\\
+011&$\emptyset$&$\emptyset$\\
+100&$\emptyset$&$\emptyset$\\
+101&$\emptyset$&$\emptyset$\\
+110&$\emptyset$&$\emptyset$\\
+111&$\emptyset$&$\emptyset$
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+000&0110 0000 1&0010\\
+001&0110 0000 1&0001\\
+010&$\emptyset$&$\emptyset$\\
+011&$\emptyset$&$\emptyset$\\
+100&0010 0001 0 &1000\\
+101&$\emptyset$&$\emptyset$\\
+110&$\emptyset$&$\emptyset$\\
+111&$\emptyset$&$\emptyset$
+\end{tabular}
+
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+000&0110 0000 1&0010\\
+001&0110 0000 1&0001\\
+010&0010 0100 0&0000\\
+011&$\emptyset$&$\emptyset$\\
+100&0010 0001 0 &1000\\
+101&$\emptyset$&$\emptyset$\\
+110&$\emptyset$&$\emptyset$\\
+111&$\emptyset$&$\emptyset$
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+000&0010 0001 0&0000\\
+001&0110 0000 1&0001\\
+010&0010 0100 0&0000\\
+011&$\emptyset$&$\emptyset$\\
+100&0010 0001 0 &1000\\
+101&$\emptyset$&$\emptyset$\\
+110&$\emptyset$&$\emptyset$\\
+111&$\emptyset$&$\emptyset$
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+000&1000 0100 0 &0011\\
+001&0110 0000 1&0001\\
+010&0010 0100 0&0000\\
+011&$\emptyset$&$\emptyset$\\
+100&0010 0001 0 &1000\\
+101&$\emptyset$&$\emptyset$\\
+110&$\emptyset$&$\emptyset$\\
+111&$\emptyset$&$\emptyset$
+\end{tabular}
+
+\textbf{B.}
+
+$\begin{tabular}{c| c c c}
+\textbf{Hex}&\textbf{Tag(First 10)}&\textbf{Set (Middle 2)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0x0000&0000  0000 00& 00 &0000\\
+0x8400&1000 0100 00& 00 & 0000\\
+0x6082&0110 0000 10& 00 & 0010\\
+0x840C&1000 0100 00 & 00 & 1100\\
+0x8411&1000 0100 00 & 01 &  0001 \\ 
+0x2148&0010 0001 01 & 00 & 1000 \\
+0x2420&0010 0100 00 & 10 & 0000 \\
+0x2100&0010 0001 00 & 00 & 0000 \\
+0x8403&1000 0100 00 & 00 & 0011
+\end{tabular}$
+
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+00&0000  0000 00&0000\\
+01&$\emptyset$&$\emptyset$\\
+10&$\emptyset$&$\emptyset$\\
+11&$\emptyset$&$\emptyset$\\
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+00&1000 0100 00&0000\\
+01&$\emptyset$&$\emptyset$\\
+10&$\emptyset$&$\emptyset$\\
+11&$\emptyset$&$\emptyset$\\
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+00&0110 0000 10&0010\\
+01&$\emptyset$&$\emptyset$\\
+10&$\emptyset$&$\emptyset$\\
+11&$\emptyset$&$\emptyset$\\
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+00&1000 0100 00 &1100\\
+01&$\emptyset$&$\emptyset$\\
+10&$\emptyset$&$\emptyset$\\
+11&$\emptyset$&$\emptyset$\\
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+00&1000 0100 00 &1100\\
+01&1000 0100 00&0001\\
+10&$\emptyset$&$\emptyset$\\
+11&$\emptyset$&$\emptyset$\\
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+00&0010 0001 01 &1000\\
+01&1000 0100 00&0001\\
+10&$\emptyset$&$\emptyset$\\
+11&$\emptyset$&$\emptyset$\\
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+00&0010 0001 01 &1000\\
+01&1000 0100 00&0001\\
+10&0010 0100 00&0000\\
+11&$\emptyset$&$\emptyset$\\
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+00&0010 0001 01 &0000\\
+01&1000 0100 00&0001\\
+10&0010 0100 00&0000\\
+11&$\emptyset$&$\emptyset$\\
+\end{tabular} $\longrightarrow$
+\begin{tabular}{c|c|c}
+\textbf{Tag}&\textbf{Set}&\textbf{Offset}\\ [0.5ex] 
+ \hline\hline
+00&1000 0100 00 &0011\\
+01&1000 0100 00&0001\\
+10&0010 0100 00&0000\\
+11&$\emptyset$&$\emptyset$\\
+\end{tabular}
+
+\textbf{C.}
+
+$\begin{tabular}{c| c c}
+\textbf{Hex}&\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0x0000&0000  0000 0000 &0000\\
+0x8400&1000 0100 0000 & 0000\\
+0x6082&0110 0000 1000 & 0010\\
+0x840C&1000 0100 0000 & 1100\\
+0x8411&1000 0100 0001 &  0001 \\ 
+0x2148&0010 0001 0100 & 1000 \\
+0x2420&0010 0100 0010 & 0000 \\
+0x2100&0010 0001 0000 & 0000 \\
+0x8403&1000 0100 0000 & 0011
+\end{tabular}$
+
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 0000 &0000\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 0000 &0000\\
+1000 0100 0000 & 0000\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 0000 &0000\\
+1000 0100 0000 & 0000\\
+0110 0000 1000 & 0010\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 0000 &0000\\
+0110 0000 1000 & 0010\\
+1000 0100 0000 & 1100\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 0000 &0000\\
+0110 0000 1000 & 0010\\
+1000 0100 0000 & 1100\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 0000 &0000\\
+0110 0000 1000 & 0010\\
+1000 0100 0000 & 1100\\
+1000 0100 0001 & 0001\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 0000 &0000\\
+0110 0000 1000 & 0010\\
+1000 0100 0000 & 1100\\
+1000 0100 0001 & 0001\\
+0010 0001 0100 & 1000\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 0000 &0000\\
+0110 0000 1000 & 0010\\
+1000 0100 0000 & 1100\\
+1000 0100 0001 & 0001\\
+0010 0001 0100 & 1000\\
+0010 0100 0010 & 0000\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 0000 &0000\\
+0110 0000 1000 & 0010\\
+1000 0100 0000 & 1100\\
+1000 0100 0001 & 0001\\
+0010 0001 0100 & 1000\\
+0010 0100 0010 & 0000\\
+0010 0001 0000 & 0000\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 0000 &0000\\
+0110 0000 1000 & 0010\\
+1000 0100 0000 & 1100\\
+1000 0100 0001 & 0001\\
+0010 0001 0100 & 1000\\
+0010 0100 0010 & 0000\\
+0010 0001 0000 & 0000\\
+1000 0100 0000 & 0011\\
+\end{tabular}
+
+
+\textbf{D.}
+
+$\begin{tabular}{c| c c}
+\textbf{Hex}&\textbf{Tag(First 11)}&\textbf{Offset (Last 5 bits)}\\ [0.5ex]
+\hline \hline
+0x0000&0000  0000 000&0 0000\\
+0x8400&1000 0100 000&0  0000\\
+0x6082&0110 0000 100&0 0010\\
+0x840C&1000 0100 000&0 1100\\
+0x8411&1000 0100 000&1 0001 \\ 
+0x2148&0010 0001 010&0 1000 \\
+0x2420&0010 0100 001&0 0000 \\
+0x2100&0010 0001 000&0 0000 \\
+0x8403&1000 0100 000&0 0011
+\end{tabular}$
+
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 000 &0 0000\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 000 &0 0000\\
+1000 0100 000 &0 0000\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 000 &0 0000\\
+1000 0100 000 &0 0000\\
+0110 0000 100 & 0 0010\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 000 &0 0000\\
+1000 0100 000 &0 0000\\
+0110 0000 100 & 0 0010\\
+1000 0100 000 & 0 1100\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 000 &0 0000\\
+1000 0100 000 &0 0000\\
+0110 0000 100 & 0 0010\\
+1000 0100 000 & 1 0001\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 000 &0 0000\\
+1000 0100 000 &0 0000\\
+0110 0000 100 & 0 0010\\
+1000 0100 000 & 1 0001\\
+0010 0001 010 & 0 1000\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 000 &0 0000\\
+1000 0100 000 &0 0000\\
+0110 0000 100 & 0 0010\\
+1000 0100 000 & 1 0001\\
+0010 0001 010 & 0 1000\\
+0010 0100 001 & 0 0000\\
+$\emptyset$ & $\emptyset$\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 000 &0 0000\\
+1000 0100 000 &0 0000\\
+0110 0000 100 & 0 0010\\
+1000 0100 000 & 1 0001\\
+0010 0001 010 & 0 1000\\
+0010 0100 001 & 0 0000\\
+0010 0001 000 & 0 0000\\
+$\emptyset$ & $\emptyset$\\
+\end{tabular} $\rightarrow$
+
+\begin{tabular}{c c}
+\textbf{Tag(First 12)}&\textbf{Offset (Last 4 bits)}\\ [0.5ex]
+\hline \hline
+0000 0000 000 &0 0000\\
+1000 0100 000 &0 0000\\
+0110 0000 100 & 0 0010\\
+1000 0100 000 & 1 0001\\
+0010 0001 010 & 0 1000\\
+0010 0100 001 & 0 0000\\
+0010 0001 000 & 0 0000\\
+1000 0100 000 & 0 0011\\
+\end{tabular}
+
+\question[20]
+\textbf{Eviction Policies.}
+Consider the following request sequence:
+$$ A, B, C, B, A, D, C, E, B, D, A, C $$
+\begin{parts}
+\part[5]
+Provide a logical diagram that shows how an optimal fully associative cache of size 3 will cache this sequence. 
+
+\part[5]
+Provide a logical diagram that shows how a FIFO fully associative cache of size 3 will cache this sequence. 
+
+\part[5]
+Provide a logical diagram that shows how an LRU fully associative cache of size 3 will cache this sequence. 
+
+\part[5]
+Label each miss in your diagram for part c with its type. 
+\end{parts}
+
+\end{questions}
+
+For all sub questions \textbf{bold represents replacement} and \textit{italics represents hit}
+
+\textbf{A.}
+
+
+
+\begin{center}
+\begin{tabular}{c|ccc ccc ccc ccc}
+\textbf{Cache}& 1 (A) & 2 (B) & 3 (C) & 4 (B)& 5 (A)& 6 (D)& 7 (C)& 8 (E) & 9 (B) & 10 (D) & 11 (A)& 12 (C) \\ [0.5ex] 
+ \hline\hline
+1& \textbf{A} & A & A & A & \textit{A} & \textbf{D} & D & D & D & \textit{D} & \textbf{A} & \textbf{C}\\
+2&$\emptyset$& \textbf{B} & B & \textit{B} & B & B & B & B & \textit{B} & B & B & B\\
+3&$\emptyset$& $\emptyset$ & \textbf{C} & C & C & C & \textit{C} & \textbf{E} & E & E & E & E\\
+\end{tabular}
+\end{center}
+
+
+\textbf{B.}
+
+\begin{center}
+\begin{tabular}{c|ccc ccc ccc ccc}
+\textbf{Cache}& 1 (A) & 2 (B) & 3 (C) & 4 (B)& 5 (A)& 6 (D)& 7 (C)& 8 (E) & 9 (B) & 10 (D) & 11 (A)& 12 (C) \\ [0.5ex] 
+ \hline\hline
+1& \textbf{A (1)} & A (1) & A (1) & A (1) & \textit{A (1)} & \textbf{D (6)} & D (6) & D (6) & D (6) & \textit{D (6) }& \textbf{A (11)}& A (11)\\
+2& $\emptyset$ & \textbf{B (2)} & B (2) & \textit{B (2)} & B (2) & B (2) & B (2) &\textbf{ E (8)} & E (8) & E (8)  & E (8) & \textbf{C (12)}\\
+3&$\emptyset$ & $\emptyset$ & \textbf{C (3)} & C (3) & C (3) & C (3) &\textit{ C (3)} & C (3) & \textbf{B (9) }& B (9) & B (9) &  B (9)\\
+\end{tabular}
+\end{center}
+
+\textbf{C.}
+
+\begin{center}
+
+\begin{tabular}{c|ccc ccc ccc ccc}
+\textbf{Cache}& 1 (A) & 2 (B) & 3 (C) & 4 (B)& 5 (A)& 6 (D)& 7 (C)& 8 (E) & 9 (B) & 10 (D) & 11 (A)& 12 (C) \\ [0.5ex] 
+ \hline\hline
+1& \textbf{A (1)} & A (1) & A (1) & A (1) & \textit{A (5)} & A (5) & A (5) & \textbf{E (8)} & E (8) & E (8) &\textbf{ A (11)} & A (11)\\
+2&$\emptyset$ & \textbf{B (2)} & B (2) & \textit{B (4)} & B (4) & B (4) & \textbf{C (7)} & C (7) & C (7) & \textbf{D (10)} & D (10) & D (10)\\
+3&$\emptyset$& $\emptyset$ & \textbf{C (3)} & C (3) & C (3) & \textbf{D (6)} & D (6) & D (6) & \textbf{B (9)} & B (9) & B (9)& \textbf{C (12)}\\
+\end{tabular}
+\end{center}
+
+\textbf{D.}
+
+\begin{itemize}
+\item Requests 1-3: Compulsory misses
+\item Request 6: Compulsory miss
+\item Request 7: Replacement miss
+\item Request 8: Compulsory miss
+\item Request 9-10: Replacement miss
+\item Request 11-12: Capacity miss
+\end{itemize}
+
+\end{document}
