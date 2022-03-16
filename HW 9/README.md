@@ -12,7 +12,7 @@ To test, run `make run_benchmark` this will build `Benchmark` then create a file
 
 This is a difficult assignment to avoid adding additional overhead to the timing. Some solutions I have heard have been to use a for loop (this creates additional micro instructions), unroll a for loop. I opted unroll a for loop into four calls and divide the time by four. 
 
-[Graph of plot](plot.png)
+![Graph of plot](plot.png)
 
 *The resulting graph is chaotic and as of this commit is a point plot without fancy tricks. I have attempted to make it a boxplot or a graph with the x axis jittered to to no available.* 
 
