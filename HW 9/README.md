@@ -1,12 +1,36 @@
 # HW 9: Memory Coding Communtication (Evaluation Assignment)
 
-## Question 1: Benchmarking the hierarchy 
+This assignment has....
 
-This file
+Only two files are used across both questions:
+
+ * `README.md`
+ 	 * The file for documentation and writeup
+ * `Makefile`
+	 * File for building
+
+## Question 1: Benchmarking the Memory Hierarchy 
+
+This question asks for a look into the memory hierarchy. 
+
+There are several associated files:
+
+ * [x] `Benchmark.C`
+	 * File that contains relevant code for question.
+ * [x] `Benchmark.hh`
+	 * Header file.
+ * [x] `output.csv`
+ 	 * Data from a run of the most recent `Benchmark.C` on my computer. Details on computer specifics are below. 
+ * [x] `plot.gnuplot` 
+	 * Charts the data.
+ * [x] `plot.png`
+	 * Chart generated from `plot.gnuplot`.
+ * [ ] `clean.py`
+	 * Pivots `output.csv` longer for use as a boxplot. 
 
 ### Testing
 
-To test, run `make run_benchmark` this will build `Benchmark` then create a file that times a list up to 1 gb by powers of 2 and makes 10,000 accesses to the memory. It then generates a plot in gnuplot.
+To test, run `make run_benchmark` this will build `Benchmark` then create a file that times a list up to 1 gb by powers of 2 and makes 10,000 accesses to the memory. It then generates a plot using gnuplot.
 
 ## Analysis
 
@@ -24,7 +48,7 @@ CPU | L2 Cache | 2.0 MB
 CPU | L3 Cache | 8.0 MB
 RAM | RAM | 32 GB
 Disk | SSD | 512 GB 
-GPU | GPU | 6 GB
+GPU | vRAM | 6 GB
 
 
 What I can say from this graph is there are a handful of outliers before 33 KB that continues to 128 kB. I would guess that at this stage it was still utulizing L1 cache as it had consistent fast results with the majority of points being negligible to time. 
@@ -37,3 +61,10 @@ It's a little difficult to see because of the scaling, but once the computer is 
 
 
 Digging through the CSV, what is not reflected in this graph are the number of points where there exists overlap. In thelower ranges the time is closer to negligible. 
+
+
+## Question 2: Comparing Barriers
+
+
+
+
