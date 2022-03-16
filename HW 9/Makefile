@@ -15,7 +15,7 @@ plot:
 
 run_benchmark:
 	make Benchmark
-	./Benchmark 100 2 1073741824 
+	./Benchmark 2500 2 1073741824 
 	make plot
 
 %.o: %.cc %.hh

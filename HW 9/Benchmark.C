@@ -24,7 +24,7 @@ int main(int argc, char* argv[]){
     // Return a csv of two columns
     // Size | Time (NS)
     output = fopen("Output.csv", "w"); // file to write to
-    fprintf(output, "Size (Bytes),Time (NS)\n");
+    fprintf(output, "Size (Bytes),Time (NS),Trial\n");
 
     
 
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]){
     // allocate a list of size bytes
     
         for(int k=0; k<trials; k++){
-            fprintf(output, "%i,%f\n", size_array[j], time_exe(size_array[j], rand_list)); //write out results
+            fprintf(output, "%i,%f,%i\n", size_array[j], time_exe(size_array[j], rand_list), k); //write out results
         }
 
         free(rand_list); // release memory after iteration
@@ -61,16 +61,22 @@ int main(int argc, char* argv[]){
 
 double time_exe(int size, vec_t* rand_list){
     clock_t start, end; // start and end time
-    vec_t holder; // holds accessed variable
-    int access_index = rand()%size; // picks an index
+    vec_t _0, _1, _2, _3; // holds random accessed variable
+    int access_index_0 = rand()%size; // picks an index
+    int access_index_1 = rand()%size;
+    int access_index_2 = rand()%size;
+    int access_index_3 = rand()%size;
 
     start = clock();
-    holder = rand_list[access_index];//execute here
+    _0 = rand_list[access_index_0];//execute here
+    _1 = rand_list[access_index_1];
+    _2 = rand_list[access_index_2];
+    _3 = rand_list[access_index_3];
     end = clock();
 
-    srand(holder); // So the compiler doesn't become smart and not execute the line above, this is included
+    srand((_0+_1)%(_2+_3)); // So the compiler doesn't become smart and not execute the line above, this is included
 
-    return (end-start)*CLOCKS_PER_SEC*pow(10, -9); // returns nano sec time
+    return (end-start)*CLOCKS_PER_SEC*pow(10, -9)/4; // returns nano sec time
 }
 
 vec_t* generate_random_list(int size){
