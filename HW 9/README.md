@@ -9,6 +9,8 @@ Only two files are used across both questions:
  * `Makefile`
 	 * File for building
 
+Completion of files are denoted with checkmark boxes (-[x]) 
+
 ## Question 1: Benchmarking the Memory Hierarchy 
 
 This question asks for a look into the memory hierarchy. 
@@ -25,8 +27,6 @@ There are several associated files:
 	 * Charts the data.
  * [x] `plot.png`
 	 * Chart generated from `plot.gnuplot`.
- * [ ] `clean.py`
-	 * Pivots `output.csv` longer for use as a boxplot. 
 
 ### Testing
 
@@ -60,11 +60,41 @@ After 2 MB there is no clear deliniation without becoming a [Texas Sharpshooter]
 It's a little difficult to see because of the scaling, but once the computer is attempting to access from a gigabyte large array it has longer misses. 
 
 
-Digging through the CSV, what is not reflected in this graph are the number of points where there exists overlap. In thelower ranges the time is closer to negligible. 
+Digging through the CSV, what is not reflected in this graph are the number of points where there exists overlap. In the lower ranges the time is closer to negligible. 
 
 
 ## Question 2: Comparing Barriers
 
+This question uses code distributed in class
 
+
+The files for this problem are:
+
+- [ ] `dissemination.cc` `dissemination.hh`
+	* Contains code for this 
+- [ ] `centralized.cc` `centralized.hh`
+	* Contains code for...
+- [ ] `mcs.cc` `mcs.hh`
+	* Contains code for the MCS barrier...
+- [ ] `barrier_testing.cc` `barrier_testing.hh`
+	* This file takes the previous three files and links them so...
+- [ ] `barrier_performance.cc` `barrier_performance`
+	* These files test the performance of barriers
+
+### Implementation
+
+The implementation is mostly outlined above...
+
+
+### Correctness Testing 
+
+Correctness testing is performed in `barrier_testing.cc` and can be run with `make run_barrier_correctness`
+
+### Performance Testing
+
+Performance testing can be run with `make run_barrier_performance`
+
+### Analysis
+ 
 
 

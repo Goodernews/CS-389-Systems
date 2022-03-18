@@ -6,6 +6,8 @@
 #include<math.h>
 #include<climits>
 
+
+
 typedef unsigned int vec_t; // alias of type
 vec_t max_num = UINT_MAX; // stores the max possible number of vec type
 
