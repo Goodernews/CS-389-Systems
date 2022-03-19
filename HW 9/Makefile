@@ -1,13 +1,13 @@
 CXX=gcc
 CXXFLAGS=-Wall -Werror -Wextra -pedantic -O0 -g
 LDFLAGS=$(CXXFLAGS)
-OBJ=$(SRC:.cc=.o)
+OBJ=$(SRC:.C=.o)
 
 all:
 	Benchmark
 
 Benchmark: Benchmark.o
-	$(CXX) $(LDFLAGS) -o $@ $^ -lm
+	$(CXX) $(LDFLAGS) -o $@ $^ -O3 -lm
 
 
 dissemination: dissemination.o
@@ -46,7 +46,7 @@ run_barrier_testing:
 	make barrier_testing
 	./barrier_testing
 
-%.o: %.cc %.hh
+%.o: %.C %.hh
 	$(CXX) $(CXXFLAGS) $(OPTFLAGS) -c -o $@ $< -lm
 
 
