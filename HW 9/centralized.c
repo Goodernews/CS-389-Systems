@@ -1,9 +1,9 @@
-#include "centralized.hh"
+#include "centralized.h"
 
 void* centralized_barrier(void *Arguments){
 	struct args *arguments = (struct args*)Arguments;
 	bool local_sense = ! arguments->Sense;
-	if (arguments->Counter.fetch_add(1) == arguments->Nthreads) {
+	if (atomic_fetch_add_explicit(&arguments->Counter, 1, memory_order_relaxed) == arguments->Nthreads) {
 		arguments->Counter = 0;
 		arguments->Sense = local_sense;
 	} 
@@ -12,6 +12,9 @@ void* centralized_barrier(void *Arguments){
 		while (arguments->Sense != local_sense){
 		       	/* spin */ }
 	}
+
+	return 0;
+
 }
 
 
