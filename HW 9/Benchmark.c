@@ -1,4 +1,4 @@
-#include "Benchmark.hh"
+#include "Benchmark.h"
 
 
 int main(int argc, char* argv[]){
@@ -59,24 +59,38 @@ int main(int argc, char* argv[]){
 
 }
 
+
 double time_exe(int size, vec_t* rand_list){
-    clock_t start, end; // start and end time
-    vec_t _0, _1, _2, _3; // holds random accessed variable
-    int access_index_0 = rand()%size; // picks an index
-    int access_index_1 = rand()%size;
-    int access_index_2 = rand()%size;
-    int access_index_3 = rand()%size;
+    	clock_t start, end; // start and end time
+    	vec_t _0, _1, _2, _3, _4, _5, _6, _7, _8, _9; // holds random accessed variable
+    	int access_index_0 = rand()%size; // picks an index
+    	int access_index_1 = rand()%size;
+    	int access_index_2 = rand()%size;
+    	int access_index_3 = rand()%size;
+	int access_index_4 = rand()%size;
+ 	int access_index_5 = rand()%size;
+ 	int access_index_6 = rand()%size;
+  	int access_index_7 = rand()%size;
+  	int access_index_8 = rand()%size;
+ 	int access_index_9 = rand()%size;
+ 
 
-    start = clock();
-    _0 = rand_list[access_index_0];//execute here
-    _1 = rand_list[access_index_1];
-    _2 = rand_list[access_index_2];
-    _3 = rand_list[access_index_3];
-    end = clock();
+	start = clock();
+    	_0 = rand_list[access_index_0];//execute here
+    	_1 = rand_list[access_index_1];
+    	_2 = rand_list[access_index_2];
+    	_3 = rand_list[access_index_3];
+	_4 = rand_list[access_index_4];//execute here
+    	_5 = rand_list[access_index_5];
+    	_6 = rand_list[access_index_6];
+    	_7 = rand_list[access_index_7];
+	_8 = rand_list[access_index_8];//execute here
+    	_9 = rand_list[access_index_9];
+	end = clock();
 
-    srand((_0+_1)%(_2+_3)); // So the compiler doesn't become smart and not execute the line above, this is included
+    srand(((_0+_1)%(_2+_3))+((_4+_5)%(_6+_7))+(_8%_9)); // So the compiler doesn't become smart and not execute the line above, this is included
 
-    return (end-start)*CLOCKS_PER_SEC*pow(10, -9)/4; // returns nano sec time
+    return ((double)(end-start))/(CLOCKS_PER_SEC)*1e8; // returns nano sec time 1e9 /10
 }
 
 vec_t* generate_random_list(int size){
@@ -86,5 +100,4 @@ vec_t* generate_random_list(int size){
 	}
 	return list;
 }
-
 
