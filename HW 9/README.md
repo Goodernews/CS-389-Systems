@@ -70,21 +70,25 @@ This question uses code distributed in class
 
 The files for this problem are:
 
+- [x] `centralized.cc` `centralized.hh`
+	* Contains code for the centralized barrier. 
+	* Passes compilation but spins endlessly.
 - [ ] `dissemination.cc` `dissemination.hh`
 	* Contains code for this 
-- [ ] `centralized.cc` `centralized.hh`
-	* Contains code for...
 - [ ] `mcs.cc` `mcs.hh`
 	* Contains code for the MCS barrier...
 - [ ] `barrier_testing.cc` `barrier_testing.hh`
-	* This file takes the previous three files and links them so...
+	* This file takes the previous three files and links them and runs unit tests.
 - [ ] `barrier_performance.cc` `barrier_performance`
 	* These files test the performance of barriers
 
 ### Implementation
 
-The implementation is mostly outlined above...
+The implementation is mostly outlined above. Code is in C and is compiled using `gcc 9.4.0`.
 
+Each barrier has a specific header file that includes the necessary header files in addition to two functions: Barrier intializer (`Centralized`, `Dissemination`)
+
+Threads are made using `pthread.h`.
 
 ### Correctness Testing 
 
@@ -96,5 +100,4 @@ Performance testing can be run with `make run_barrier_performance`
 
 ### Analysis
  
-
-
+Pthreads in 

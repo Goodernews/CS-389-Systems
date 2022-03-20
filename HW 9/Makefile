@@ -1,7 +1,7 @@
 CXX=gcc
 CXXFLAGS=-Wall -Werror -Wextra -pedantic -O0 -g
 LDFLAGS=$(CXXFLAGS)
-OBJ=$(SRC:.C=.o)
+OBJ=$(SRC:.c=.o)
 
 all:
 	Benchmark
@@ -14,7 +14,7 @@ dissemination: dissemination.o
 	$(CXX) $(LDFLAGS) -o $@ $^
 
 centralized: centralized.o
-	$(CXX) $(LDFLAGS) -o $@ $^
+	$(CXX) $(LDFLAGS) -o $@ $^ -lpthread
 
 mcs: mcs.o
 	$(CXX) $(LDFLAGS) -0 $@ $^
@@ -46,9 +46,9 @@ run_barrier_testing:
 	make barrier_testing
 	./barrier_testing
 
-%.o: %.C %.hh
+%.o: %.c %.h
 	$(CXX) $(CXXFLAGS) $(OPTFLAGS) -c -o $@ $< -lm
 
 
 clean:
-	rm -rf *.o *.csv *.png Benchmark dissemination centralized
+	rm -rf *.o *.csv *.png Benchmark dissemination centralized barrier_testing

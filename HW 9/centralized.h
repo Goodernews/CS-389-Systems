@@ -12,7 +12,7 @@ int Centralized(int num_threads); // implementation
 
 void* centralized_barrier(void *Arguments);
 
-struct args {
+struct centralized_args {
     atomic_int Counter;
     bool Sense;
     int Nthreads;

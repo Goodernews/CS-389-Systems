@@ -6,6 +6,7 @@ set xlabel 'Size of array (Bytes)'
 set ylabel "Time to Access (Nanoseconds)"
 set format x '%.0s%cB'
 set logscale x 2
+set logscale y 10
 
 #f(x) = m*x + b # best fit
 #fit f(x) "output.csv" using 1:2 via m,b
