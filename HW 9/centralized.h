@@ -1,11 +1,12 @@
 #pragma once
 
 #include<stdio.h>
+#include<stdatomic.h>
 #include<stdlib.h>
 #include<pthread.h>
-#include<atomic>
+#include <stdbool.h>
 
-using namespace std;
+
 
 int Centralized(int num_threads); // implementation
 
